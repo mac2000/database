@@ -3,6 +3,23 @@ Database PDO Helper
 
 PDO Helper implements some common database operations
 
+Installation
+------------
+
+Here is `composer.json` example:
+
+    {
+        "require": {
+            "mac/database": "x"
+        },
+        "repositories": [
+            {
+                "type": "vcs",
+                "url": "https://github.com/mac2000/database"
+            }
+        ]
+    }
+
 Usage example
 -------------
 
