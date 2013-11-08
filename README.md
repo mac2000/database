@@ -1,6 +1,8 @@
 Database PDO Helper
 ===================
 
+[![Build Status](https://travis-ci.org/mac2000/database.png?branch=master)](https://travis-ci.org/mac2000/database)
+
 PDO Helper implements some common database operations
 
 Installation
