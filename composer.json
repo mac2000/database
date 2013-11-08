@@ -1,0 +1,19 @@
+{
+    "name": "Mac/Database",
+    "description": "PDO helper",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Marchenko Alexandr",
+            "email": "marchenko.alexandr@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Mac\\": "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    }
+}
