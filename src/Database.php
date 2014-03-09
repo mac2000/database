@@ -51,6 +51,13 @@ class Database
         return $stmt->fetch($this->fetchMode);
     }
 
+    public function cell($sql, array $params = array())
+    {
+        $stmt = $this->invoke($sql, $params);
+        $row = $stmt->fetch($this->fetchMode);
+        return $row ? array_shift(array_values((array)$row)) : null;
+    }
+
     /**
      * @param string $sql Query to execute, i.e. "DELETE FROM category WHERE category_id > :category_id"
      * @param array $params Query parameters, i.e. array('category_id' => 1)

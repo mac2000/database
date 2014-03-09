@@ -34,6 +34,10 @@ Retrieve all/one row(s):
     $users = $db->all("SELECT * FROM users");
     $user = $db->one("SELECT * FROM users WHERE user_id = :user_id", array('user_id' => 1));
 
+Retrieve computed value:
+
+    $count = $db->cell("SELECT COUNT(*) FROM users");
+
 Modify data:
 
     $lastInsertId = $db->execute(

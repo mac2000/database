@@ -63,6 +63,22 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Hello', $category['name']);
     }
 
+    public function testCell()
+    {
+        $result = $this->database->cell('SELECT 1');
+
+        $this->assertEquals(1, $result);
+    }
+
+    public function testThatCellMethodReturnsNull()
+    {
+        $result = $this->database->cell('SELECT NULL');
+        $this->assertEquals(null, $result);
+
+        $result = $this->database->cell('SELECT * FROM category WHERE category_id = 0');
+        $this->assertEquals(null, $result);
+    }
+
     public function testOneWithParams()
     {
         $category = $this->database->one($this->sqlWithParameters, $this->params);

@@ -56,6 +56,15 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
         $this->database->one($this->sqlWithoutParameters);
     }
 
+    public function testCell()
+    {
+        $this->setMockExpectations($this->stmt, 'execute');
+        $this->setMockExpectations($this->stmt, 'fetch');
+        $this->setMockExpectations($this->pdo, 'prepare', $this->sqlWithoutParameters, $this->stmt);
+
+        $this->database->cell($this->sqlWithoutParameters);
+    }
+
     public function testOneWithParams()
     {
         $this->setMockExpectations($this->stmt, 'execute', $this->params);
