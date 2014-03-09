@@ -51,6 +51,11 @@ class Database
         return $stmt->fetch($this->fetchMode);
     }
 
+    /**
+     * @param string $sql Query to execute, i.e. "SELECT COUNT(*) FROM category WHERE category_id > :category_id"
+     * @param array $params Query parameters, i.e. array('category_id' => 1)
+     * @return mixed|null
+     */
     public function cell($sql, array $params = array())
     {
         $stmt = $this->invoke($sql, $params);
