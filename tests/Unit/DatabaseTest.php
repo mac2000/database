@@ -1,7 +1,7 @@
 <?php
-namespace Mac\Tests\Unit;
+namespace Mac\Database\Tests\Unit;
 
-use Mac\Database;
+use Mac\Database\Database;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 
@@ -24,7 +24,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->pdo = $this->getMockBuilder('Mac\Tests\PDOMock')->getMock();
+        $this->pdo = $this->getMockBuilder('Mac\Database\Tests\PDOMock')->getMock();
         $this->stmt = $this->getMockBuilder('PDOStatement')->getMock();
         $this->database = new Database($this->pdo);
     }

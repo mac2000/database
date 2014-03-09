@@ -1,5 +1,5 @@
 <?php
-namespace Mac;
+namespace Mac\Database;
 
 use PDO;
 

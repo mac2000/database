@@ -9,8 +9,9 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "Mac\\": "src/"
+        "psr-4": {
+            "Mac\\Database\\": "src",
+            "Mac\\Database\\Tests\\": "tests"
         }
     },
     "require-dev": {

@@ -1,7 +1,7 @@
 <?php
-namespace Mac\Tests\Functional;
+namespace Mac\Database\Tests\Functional;
 
-use Mac\Database;
+use Mac\Database\Database;
 use PDO;
 use PHPUnit_Framework_TestCase;
 
