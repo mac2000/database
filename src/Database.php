@@ -60,7 +60,15 @@ class Database
     {
         $stmt = $this->invoke($sql, $params);
         $row = $stmt->fetch($this->fetchMode);
-        return $row ? array_shift(array_values((array)$row)) : null;
+
+        if (!$row) {
+            return null;
+        }
+
+        $row = (array)$row;
+        $row = array_values($row);
+
+        return array_shift($row);
     }
 
     /**
@@ -72,6 +80,17 @@ class Database
     {
         $stmt = $this->invoke($sql, $params);
         return preg_match('/insert/i', $sql) ? $this->pdo->lastInsertId() : $stmt->rowCount();
+    }
+
+    public function delete($table, array $params = array())
+    {
+        if(empty($params)){
+            return $this->execute("DELETE FROM $table");
+        } else {
+
+        }
+
+        //return $this->execute("DELETE FROM $table WHERE ")
     }
 
     protected function invoke($sql, array $params = array())
