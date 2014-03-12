@@ -3,4 +3,8 @@ language: php
 before_script:
   - composer install --dev --prefer-source
 
-script: vendor/bin/phpunit
+script:
+  - vendor/bin/phpunit
+  - vendor/bin/phpcpd src tests
+  - vendor/bin/phpmd src,tests text cleancode, codesize, controversial, design, naming, unusedcode
+  - vendor/bin/phpcs --standard=psr2 src tests

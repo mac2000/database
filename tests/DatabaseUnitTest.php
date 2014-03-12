@@ -1,11 +1,15 @@
 <?php
-namespace Mac\Database\Tests\Unit;
+namespace Mac\Database\Tests;
 
 use Mac\Database\Database;
+use PDO;
 use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_TestCase;
 
-class DatabaseTest extends PHPUnit_Framework_TestCase
+/**
+ * @SuppressWarnings(StaticAccess)
+ */
+class DatabaseUnitTest extends PHPUnit_Framework_TestCase
 {
     protected $pdo;
     protected $stmt;
@@ -40,7 +44,8 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
 
     public function testAllWithParams()
     {
-        $this->setMockExpectations($this->stmt, 'execute', $this->params);
+        $this->setMockExpectations($this->stmt, 'bindParam', ':category_id', 1, PDO::PARAM_INT);
+        $this->setMockExpectations($this->stmt, 'execute');
         $this->setMockExpectations($this->stmt, 'fetchAll');
         $this->setMockExpectations($this->pdo, 'prepare', $this->sqlWithParameters, $this->stmt);
 
@@ -67,7 +72,8 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
 
     public function testOneWithParams()
     {
-        $this->setMockExpectations($this->stmt, 'execute', $this->params);
+        $this->setMockExpectations($this->stmt, 'bindParam', ':category_id', 1, PDO::PARAM_INT);
+        $this->setMockExpectations($this->stmt, 'execute');
         $this->setMockExpectations($this->stmt, 'fetch');
         $this->setMockExpectations($this->pdo, 'prepare', $this->sqlWithParameters, $this->stmt);
 
@@ -76,7 +82,8 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        $this->setMockExpectations($this->stmt, 'execute', $this->params);
+        $this->setMockExpectations($this->stmt, 'bindParam', ':category_id', 1, PDO::PARAM_INT);
+        $this->setMockExpectations($this->stmt, 'execute');
         $this->setMockExpectations($this->stmt, 'rowCount');
         $this->setMockExpectations($this->pdo, 'prepare', $this->sqlDelete, $this->stmt);
 
@@ -85,11 +92,26 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
 
     public function testInsertExecute()
     {
-        $this->setMockExpectations($this->stmt, 'execute', $this->sqlInsertParams);
+        $this->setMockExpectations($this->stmt, 'bindParam', ':name', 'Hello', PDO::PARAM_STR);
+        $this->setMockExpectations($this->stmt, 'execute');
         $this->setMockExpectations($this->pdo, 'prepare', $this->sqlInsert, $this->stmt);
         $this->setMockExpectations($this->pdo, 'lastInsertId');
 
         $this->database->execute($this->sqlInsert, $this->sqlInsertParams);
+    }
+
+    public function testParameterBinding()
+    {
+        $database = new DatabaseMock($this->pdo);
+        $this->assertEquals(PDO::PARAM_INT, $database->getType(1));
+        $this->assertEquals(PDO::PARAM_BOOL, $database->getType(true));
+        $this->assertEquals(PDO::PARAM_BOOL, $database->getType(false));
+        $this->assertEquals(PDO::PARAM_NULL, $database->getType(null));
+        $this->assertEquals(PDO::PARAM_STR, $database->getType(''));
+        $this->assertEquals(PDO::PARAM_STR, $database->getType('Hello'));
+        $this->assertEquals(PDO::PARAM_STR, $database->getType(1.5));
+        $this->assertEquals(PDO::PARAM_STR, $database->getType(-1.5));
+        $this->assertEquals(PDO::PARAM_STR, $database->getType(array(1)));
     }
 
     protected function setMockExpectations(

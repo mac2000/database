@@ -2,12 +2,13 @@
 namespace Mac\Database;
 
 use PDO;
+use PDOStatement;
 
 /**
  * Class Database is a PDO helper to perform some common operations on database
  * @package Mac
  */
-class Database
+class Database implements DatabaseInterface
 {
     /**
      * @var PDO
@@ -30,9 +31,7 @@ class Database
     }
 
     /**
-     * @param string $sql Query to execute, i.e. "SELECT * FROM category WHERE category_id = :category_id"
-     * @param array $params Query parameters, i.e. array('category_id' => 1)
-     * @return array
+     * {@inheritdoc}
      */
     public function all($sql, array $params = array())
     {
@@ -41,9 +40,7 @@ class Database
     }
 
     /**
-     * @param string $sql Query to execute, i.e. "SELECT COUNT(*) FROM category WHERE category_id > :category_id"
-     * @param array $params Query parameters, i.e. array('category_id' => 1)
-     * @return array
+     * {@inheritdoc}
      */
     public function one($sql, array $params = array())
     {
@@ -52,29 +49,17 @@ class Database
     }
 
     /**
-     * @param string $sql Query to execute, i.e. "SELECT COUNT(*) FROM category WHERE category_id > :category_id"
-     * @param array $params Query parameters, i.e. array('category_id' => 1)
-     * @return mixed|null
+     * {@inheritdoc}
      */
     public function cell($sql, array $params = array())
     {
-        $stmt = $this->invoke($sql, $params);
-        $row = $stmt->fetch($this->fetchMode);
-
-        if (!$row) {
-            return null;
-        }
-
-        $row = (array)$row;
-        $row = array_values($row);
-
+        $row = $this->one($sql, $params);
+        $row = array_values((array)$row);
         return array_shift($row);
     }
 
     /**
-     * @param string $sql Query to execute, i.e. "DELETE FROM category WHERE category_id > :category_id"
-     * @param array $params Query parameters, i.e. array('category_id' => 1)
-     * @return int Will return number of affected rows or last insert id in case of adding new row
+     * {@inheritdoc}
      */
     public function execute($sql, array $params = array())
     {
@@ -82,21 +67,39 @@ class Database
         return preg_match('/insert/i', $sql) ? $this->pdo->lastInsertId() : $stmt->rowCount();
     }
 
-    public function delete($table, array $params = array())
-    {
-        if(empty($params)){
-            return $this->execute("DELETE FROM $table");
-        } else {
-
-        }
-
-        //return $this->execute("DELETE FROM $table WHERE ")
-    }
-
+    /**
+     * @param string $sql Query to execute, i.e. "DELETE FROM category WHERE category_id > :category_id"
+     * @param array $params Query parameters, i.e. array('category_id' => 1)
+     * @return PDOStatement
+     */
     protected function invoke($sql, array $params = array())
     {
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($params);
+        foreach ($params as $key => $value) {
+            $stmt->bindParam(':' . $key, $value, $this->getParameterDataType($value));
+        }
+        $stmt->execute();
         return $stmt;
+    }
+
+    /**
+     * Get PDO parameter type
+     *
+     * @SuppressWarnings(StaticAccess)
+     * @param $value
+     * @return int parameter data type
+     */
+    protected function getParameterDataType($value)
+    {
+        switch (gettype($value)) {
+            case 'integer':
+                return PDO::PARAM_INT;
+            case 'boolean':
+                return PDO::PARAM_BOOL;
+            case 'NULL':
+                return PDO::PARAM_NULL;
+            default:
+                return PDO::PARAM_STR;
+        }
     }
 }

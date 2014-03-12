@@ -1,12 +1,14 @@
 <?php
-namespace Mac\Database\Tests\Functional;
+namespace Mac\Tests;
 
 use Mac\Database\Database;
 use PDO;
 use PHPUnit_Framework_TestCase;
 
-
-class DatabaseTest extends PHPUnit_Framework_TestCase
+/**
+ * @SuppressWarnings(StaticAccess)
+ */
+class DatabaseFunctionalTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var Database
@@ -29,11 +31,9 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->database = new Database($this->pdo);
 
-        $this->database->execute("CREATE TABLE category (
-            category_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            name VARCHAR(50)
-        )");
-
+        $this->database->execute(
+            "CREATE TABLE category (category_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(50))"
+        );
         $this->database->execute("INSERT INTO category VALUES(NULL, :name)", array('name' => 'Hello'));
     }
 
