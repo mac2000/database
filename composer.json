@@ -1,6 +1,6 @@
 {
     "name": "Mac/Database",
-    "description": "PDO helper",
+    "description": "Simple PDO helper to perform most common database operations",
     "minimum-stability": "stable",
     "authors": [
         {
