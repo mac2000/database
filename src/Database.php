@@ -76,7 +76,7 @@ class Database implements DatabaseInterface
     {
         $stmt = $this->pdo->prepare($sql);
         foreach ($params as $key => $value) {
-            $stmt->bindParam(':' . $key, $value, $this->getParameterDataType($value));
+            $stmt->bindValue(':' . $key, $value, $this->getParameterDataType($value));
         }
         $stmt->execute();
         return $stmt;
