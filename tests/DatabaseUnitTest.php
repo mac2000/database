@@ -44,7 +44,7 @@ class DatabaseUnitTest extends PHPUnit_Framework_TestCase
 
     public function testAllWithParams()
     {
-        $this->setMockExpectations($this->stmt, 'bindParam', ':category_id', 1, PDO::PARAM_INT);
+        $this->setMockExpectations($this->stmt, 'bindValue', ':category_id', 1, PDO::PARAM_INT);
         $this->setMockExpectations($this->stmt, 'execute');
         $this->setMockExpectations($this->stmt, 'fetchAll');
         $this->setMockExpectations($this->pdo, 'prepare', $this->sqlWithParameters, $this->stmt);
@@ -72,7 +72,7 @@ class DatabaseUnitTest extends PHPUnit_Framework_TestCase
 
     public function testOneWithParams()
     {
-        $this->setMockExpectations($this->stmt, 'bindParam', ':category_id', 1, PDO::PARAM_INT);
+        $this->setMockExpectations($this->stmt, 'bindValue', ':category_id', 1, PDO::PARAM_INT);
         $this->setMockExpectations($this->stmt, 'execute');
         $this->setMockExpectations($this->stmt, 'fetch');
         $this->setMockExpectations($this->pdo, 'prepare', $this->sqlWithParameters, $this->stmt);
@@ -82,7 +82,7 @@ class DatabaseUnitTest extends PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        $this->setMockExpectations($this->stmt, 'bindParam', ':category_id', 1, PDO::PARAM_INT);
+        $this->setMockExpectations($this->stmt, 'bindValue', ':category_id', 1, PDO::PARAM_INT);
         $this->setMockExpectations($this->stmt, 'execute');
         $this->setMockExpectations($this->stmt, 'rowCount');
         $this->setMockExpectations($this->pdo, 'prepare', $this->sqlDelete, $this->stmt);
@@ -92,7 +92,7 @@ class DatabaseUnitTest extends PHPUnit_Framework_TestCase
 
     public function testInsertExecute()
     {
-        $this->setMockExpectations($this->stmt, 'bindParam', ':name', 'Hello', PDO::PARAM_STR);
+        $this->setMockExpectations($this->stmt, 'bindValue', ':name', 'Hello', PDO::PARAM_STR);
         $this->setMockExpectations($this->stmt, 'execute');
         $this->setMockExpectations($this->pdo, 'prepare', $this->sqlInsert, $this->stmt);
         $this->setMockExpectations($this->pdo, 'lastInsertId');
